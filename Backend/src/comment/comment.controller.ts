@@ -1,6 +1,5 @@
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { AuthGuard } from './../guards/auth.guard';
-import { CommentSchema } from '../schemas/Comment';
 import {
   Controller,
   Get,

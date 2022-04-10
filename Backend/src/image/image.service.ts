@@ -1,15 +1,10 @@
-import { PrismaService } from 'src/prisma/prisma.service';
 import { Injectable, UploadedFiles } from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
 import { CreateImageDto } from './dto/create-image.dto';
 import { UpdateImageDto } from './dto/update-image.dto';
 import * as admin from 'firebase-admin';
-import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class ImageService {
-  constructor(private prisma: PrismaService) {}
-
   async upload(@UploadedFiles() files: Array<Express.Multer.File>) {
     const images: {
       url: string;
