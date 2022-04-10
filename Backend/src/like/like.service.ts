@@ -1,3 +1,4 @@
+import { SuccessDataResult } from './../core/result/SuccessDataResult';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { LikeUtilitiesService } from 'src/utilities/like-utilities.service';
@@ -30,7 +31,7 @@ export class LikeService {
         },
       });
 
-      return likedPost;
+      return new SuccessDataResult(likedPost, 'Post liked successfully');
     }
     throw new BadRequestException(result);
   }
@@ -46,7 +47,7 @@ export class LikeService {
         },
       });
 
-      return unlikedPost;
+      return new SuccessDataResult(unlikedPost, 'Post unliked successfully');
     }
     throw new BadRequestException(result);
   }

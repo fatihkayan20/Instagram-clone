@@ -23,7 +23,6 @@ export class PostService {
     images: Array<Express.Multer.File>,
   ) {
     const tokenData: ITokenData = (await this.request.user) as ITokenData;
-    console.log({ tokenData });
 
     const savedImages = await this.imageService.upload(images);
 
@@ -60,6 +59,7 @@ export class PostService {
         user: true,
         images: true,
         likes: true,
+        comments: true,
       },
     });
   }
@@ -78,7 +78,7 @@ export class PostService {
       userId: tokenData?.id,
       postId: id,
     });
-    return new SuccessDataResult(likedPost, 'Post liked successfully');
+    return likedPost;
   }
 
   async unlikePost(id: string) {
@@ -88,7 +88,7 @@ export class PostService {
       userId: tokenData?.id,
       postId: id,
     });
-    return new SuccessDataResult(likedPost, 'Post unliked successfully');
+    return likedPost;
   }
 
   update(id: number, updatePostDto: UpdatePostDto) {
