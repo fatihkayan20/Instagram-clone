@@ -1,3 +1,5 @@
+import { UtilitiesModule } from './../utilities/utilities.module';
+import { LikeModule } from './../like/like.module';
 import { jwtConstants } from './../auth/constants';
 import { ImageModule } from './../image/image.module';
 import { Module } from '@nestjs/common';
@@ -9,6 +11,8 @@ import { PrismaModule } from 'src/prisma/prisma.module';
 @Module({
   imports: [
     ImageModule,
+    LikeModule,
+    UtilitiesModule,
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: { expiresIn: jwtConstants.expiresIn },

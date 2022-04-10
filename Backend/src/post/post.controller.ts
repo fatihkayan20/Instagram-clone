@@ -45,6 +45,26 @@ export class PostController {
     return this.postService.findOne(id);
   }
 
+  @UseGuards(AuthGuard)
+  @Get(':id/like')
+  async likePost(@Param('id') id: string) {
+    const res = await this.postService.likePost(id);
+    if (!res.success) {
+      throw new BadRequestException(res);
+    }
+    return res;
+  }
+
+  @UseGuards(AuthGuard)
+  @Get(':id/unlike')
+  async unlikePost(@Param('id') id: string) {
+    const res = await this.postService.unlikePost(id);
+    if (!res.success) {
+      throw new BadRequestException(res);
+    }
+    return res;
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
     return this.postService.update(+id, updatePostDto);

@@ -7,6 +7,7 @@ import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { ITokenData } from 'src/auth/entities/token-data.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { LikeService } from 'src/like/like.service';
 
 @Injectable()
 export class PostService {
@@ -14,6 +15,7 @@ export class PostService {
     private imageService: ImageService,
     @Inject(REQUEST) private request: Request,
     private prisma: PrismaService,
+    private likeService: LikeService,
   ) {}
 
   async create(
@@ -57,6 +59,7 @@ export class PostService {
       include: {
         user: true,
         images: true,
+        likes: true,
       },
     });
   }
@@ -66,6 +69,26 @@ export class PostService {
     // .populate('comments')
     // .populate('likes')
     // .populate('images');
+  }
+
+  async likePost(id: string) {
+    const tokenData: ITokenData = this.request.user as ITokenData;
+
+    const likedPost = await this.likeService.likePost({
+      userId: tokenData?.id,
+      postId: id,
+    });
+    return new SuccessDataResult(likedPost, 'Post liked successfully');
+  }
+
+  async unlikePost(id: string) {
+    const tokenData: ITokenData = this.request.user as ITokenData;
+
+    const likedPost = await this.likeService.unlikePost({
+      userId: tokenData?.id,
+      postId: id,
+    });
+    return new SuccessDataResult(likedPost, 'Post unliked successfully');
   }
 
   update(id: number, updatePostDto: UpdatePostDto) {
