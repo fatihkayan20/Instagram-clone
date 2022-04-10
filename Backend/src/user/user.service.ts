@@ -44,32 +44,21 @@ export class UserService {
   async follow(id: string) {
     const tokenData: ITokenData = this.request.user as ITokenData;
 
-    return await this.followService
-      .followUser({
-        follower: tokenData?.id,
-        following: id,
-      })
-      .then((followed) => {
-        return new SuccessDataResult(followed, 'User followed successfully');
-      })
-      .catch((err) => err.response);
+    const followed = await this.followService.followUser({
+      follower: tokenData?.id,
+      following: id,
+    });
+    return new SuccessDataResult(followed, 'User followed successfully');
   }
 
   async unFollow(id: string) {
     const tokenData: ITokenData = this.request.user as ITokenData;
 
-    return await this.followService
-      .unFollowUser({
-        follower: tokenData?.id,
-        following: id,
-      })
-      .then((unfollowed) => {
-        return new SuccessDataResult(
-          unfollowed,
-          'User unfollowed successfully',
-        );
-      })
-      .catch((err) => err.response);
+    const unfollowed = await this.followService.unFollowUser({
+      follower: tokenData?.id,
+      following: id,
+    });
+    return new SuccessDataResult(unfollowed, 'User unfollowed successfully');
   }
 
   async findByUsernameOrEmail(usernameOrEmail: string) {

@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  Req,
   UseGuards,
   BadRequestException,
 } from '@nestjs/common';
@@ -29,6 +28,7 @@ export class UserController {
   @UseGuards(AuthGuard)
   async follow(@Param('id') id: string) {
     const res = await this.userService.follow(id);
+    console.log(res);
     if (!res.success) {
       throw new BadRequestException(res);
     }
