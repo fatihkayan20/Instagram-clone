@@ -1,5 +1,5 @@
 import { SuccessDataResult } from './../core/result/SuccessDataResult';
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, Scope } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserUtilitiesService } from 'src/utilities/user-utilities.service';
@@ -10,7 +10,7 @@ import { ITokenData } from 'src/auth/entities/token-data.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class UserService {
   constructor(
     private UserUtilities: UserUtilitiesService,

@@ -36,13 +36,22 @@ export class PostController {
   }
 
   @Get()
-  findAll() {
-    return this.postService.findAll();
+  @UseGuards(AuthGuard)
+  async findAll() {
+    const res = await this.postService.findAll();
+    if (!res.success) {
+      throw new BadRequestException(res);
+    }
+    return res;
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.postService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    const res = await this.postService.findOne(id);
+    if (!res.success) {
+      throw new BadRequestException(res);
+    }
+    return res;
   }
 
   @UseGuards(AuthGuard)

@@ -1,13 +1,13 @@
 import { REQUEST } from '@nestjs/core';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { SuccessDataResult } from './../core/result/SuccessDataResult';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Scope } from '@nestjs/common';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Request } from 'express';
 import { ITokenData } from 'src/auth/entities/token-data.entity';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class CommentService {
   constructor(
     private prisma: PrismaService,

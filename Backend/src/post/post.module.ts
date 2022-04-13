@@ -1,3 +1,4 @@
+import { FollowModule } from 'src/follow/follow.module';
 import { UtilitiesModule } from './../utilities/utilities.module';
 import { LikeModule } from './../like/like.module';
 import { jwtConstants } from './../auth/constants';
@@ -13,6 +14,7 @@ import { PrismaModule } from 'src/prisma/prisma.module';
     ImageModule,
     LikeModule,
     UtilitiesModule,
+    FollowModule,
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: { expiresIn: jwtConstants.expiresIn },

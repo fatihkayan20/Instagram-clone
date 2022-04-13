@@ -48,4 +48,19 @@ export class FollowService {
     }
     throw new BadRequestException(result);
   }
+
+  async getFollowings(follower) {
+    const followings = await this.prisma.follow
+      .findMany({
+        where: {
+          followerId: follower,
+        },
+        include: {
+          following: true,
+        },
+      })
+      .then((followings) => followings.map((following) => following.following));
+
+    return followings;
+  }
 }
