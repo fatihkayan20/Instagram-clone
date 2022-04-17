@@ -1,3 +1,4 @@
+import { SecondaryAuthGuard } from './../guards/auth.guard';
 import {
   Controller,
   Post,
@@ -5,6 +6,8 @@ import {
   BadRequestException,
   HttpCode,
   SerializeOptions,
+  UseGuards,
+  Get,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -30,6 +33,17 @@ export class AuthController {
   @Post('/login')
   async login(@Body() loginDto: LoginDto) {
     const res = await this.authService.login(loginDto);
+    if (!res.success) {
+      throw new BadRequestException(res);
+    }
+    return res;
+  }
+
+  @HttpCode(200)
+  @UseGuards(SecondaryAuthGuard)
+  @Get('/token')
+  async refreshToken() {
+    const res = await this.authService.refreshToken();
     if (!res.success) {
       throw new BadRequestException(res);
     }

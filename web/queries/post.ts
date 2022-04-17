@@ -1,6 +1,7 @@
 import axios from "axios";
 import { QueryClient, useQuery } from "react-query";
 import { IPost } from "types/IPost";
+import { IResponse } from "types/IResponse";
 import { QueryKeys } from "types/QueryKeys";
 
 export const useGetPostQuery = () => {

@@ -16,3 +16,4 @@ export const useRefreshTokenQuery = ({ onSuccess, onError }: IQueryProps) => {
     }
   );
 };
+

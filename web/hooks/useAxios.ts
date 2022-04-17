@@ -1,56 +1,33 @@
-import { useRefreshTokenQuery } from "./../queries/auth";
 import axios from "axios";
-import * as React from "react";
-import { useRouter } from "next/router";
+import * as React from 'react'
 export const useAxios = () => {
-  const router = useRouter();
-
-  const { refetch } = useRefreshTokenQuery({
-    onSuccess: (data) => {
-      setToken(data.token);
-    },
-    onError: (error) => {
-      router.push("/login");
-    },
-  });
-
-  const setBaseUrl = React.useCallback(
-    async (url = "https://instagram-backend.vercel.app/") => {
-      axios.defaults.baseURL = url;
-    },
-    []
-  );
+  const setBaseUrl = React.useCallback(async (url = "https://instagram-backend.vercel.app/") => {
+    axios.defaults.baseURL = url;
+  },[]);
 
   const setToken = React.useCallback(async (token: string) => {
-    localStorage.setItem("token", token);
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  }, []);
+  },[]);
 
-  const setAuthInterceptor = React.useCallback(async () => {
-    axios.interceptors.response.use(
-      (response) => {
-        console.log({ response });
-        return response;
-      },
-      (error) => {
-        if (error.response.status === 401) {
-          console.log("token expired");
-          refetch();
-        }
-        return Promise.reject(error);
+  axios.interceptors.request.use(
+    (config) => {
+      return config;
+    },
+    (error) => {
+      if (error.response.status === 401) {
       }
-    );
-  }, [refetch]);
+      return Promise.reject(error);
+    }
+  );
 
   const setup = React.useCallback(async () => {
-    const token = localStorage.getItem("token") || "";
     await setBaseUrl();
-    await setToken(token);
-    await setAuthInterceptor();
-  }, [setBaseUrl, setToken, setAuthInterceptor]);
+    await setToken(
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZhdGkiLCJlbWFpbCI6ImZhdGlAZ21haWwuY29tIiwiaWQiOiI2MjUyY2JhOGM1OTM1MjgxNmEzMTEyNWMiLCJpYXQiOjE2NTAxMzEwMjMsImV4cCI6MTY1MDEzNDYyM30.CovLIInbjzHARXaaCxdgAnZQMD78JG5kOA2nIiAwGBI"
+    );
+  },[setBaseUrl, setToken]);
 
   return {
     setup,
-    setToken,
   };
 };
