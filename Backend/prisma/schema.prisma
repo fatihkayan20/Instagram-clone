@@ -24,6 +24,7 @@ model User {
   followers  Follow[]      @relation(name: "followers")
   followings Follow[]      @relation(name: "followings")
   profileUrl ProfileImage? @relation(name: "profileUrl")
+  token      Token?        @relation(name: "token")
 }
 
 model Post {
@@ -85,10 +86,20 @@ model PostImage {
 
 model ProfileImage {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String   @db.ObjectId@unique
+  userId    String   @unique @db.ObjectId
   url       String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   user User @relation("profileUrl", fields: [userId], references: [id])
+}
+
+model Token {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @unique @db.ObjectId
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation("token", fields: [userId], references: [id])
 }

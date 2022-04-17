@@ -33,3 +33,30 @@ export class AuthGuard implements CanActivate {
     }
   }
 }
+
+@Injectable()
+export class SecondaryAuthGuard implements CanActivate {
+  constructor(private jwtService: JwtService) {}
+
+  canActivate(
+    context: ExecutionContext,
+  ): boolean | Promise<boolean> | Observable<boolean> {
+    const request = context.switchToHttp().getRequest();
+    const token = request.headers.authorization?.split('Bearer ')[1];
+
+    if (!token) {
+      throw new UnauthorizedException();
+    }
+
+    // check if token is valid
+    try {
+      const decoded = this.jwtService.decode(token);
+      request.user = decoded;
+      return request;
+
+      // if token is not valid, return false
+    } catch (err) {
+      throw new UnauthorizedException();
+    }
+  }
+}

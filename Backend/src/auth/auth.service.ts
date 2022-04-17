@@ -1,22 +1,27 @@
+import { TokenService } from './../token/token.service';
 import { SuccessDataResult } from './../core/result/SuccessDataResult';
 import { ErrorResult } from './../core/result/ErrorResult';
-import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { Inject, Injectable } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
-import * as bcrypt from 'bcrypt';
+
+import { REQUEST } from '@nestjs/core';
+import { Request } from 'express';
+import { ITokenData } from './entities/token-data.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
-    private jwtService: JwtService,
+    private tokenService: TokenService,
+    @Inject(REQUEST) private request: Request,
   ) {}
 
   async register(registerDto: RegisterDto) {
     const createdUser = await this.userService.create(registerDto);
-    const token = await this.createJwtToken(createdUser.data);
+    const token = await this.tokenService.createJwtToken(createdUser.data);
+    await this.tokenService.storeToken(token.token, createdUser.data.id);
 
     return new SuccessDataResult(
       {
@@ -36,7 +41,7 @@ export class AuthService {
       return new ErrorResult('Invalid credentials');
     }
 
-    const isValid = await this.comparePassword(
+    const isValid = await this.tokenService.comparePassword(
       loginDto.password,
       user.password,
     );
@@ -45,7 +50,8 @@ export class AuthService {
       return new ErrorResult('Invalid credentials');
     }
 
-    const token = await this.createJwtToken(user);
+    const token = await this.tokenService.createJwtToken(user);
+    await this.tokenService.storeToken(token.token, user.id);
 
     return new SuccessDataResult({
       user,
@@ -53,20 +59,12 @@ export class AuthService {
     });
   }
 
-  async createJwtToken(user: any) {
-    const payload = {
-      username: user.username,
-      email: user.email,
-      id: user.id,
-    };
-
-    return {
-      expiresIn: 3600,
-      token: await this.jwtService.sign(payload),
-    };
-  }
-
-  async comparePassword(password: string, hashedPassword: string) {
-    return await bcrypt.compare(password, hashedPassword);
+  async refreshToken() {
+    const tokenData = this.request.user as ITokenData;
+    const newToken = await this.tokenService.refreshToken(
+      this.request.headers.authorization,
+      tokenData,
+    );
+    return new SuccessDataResult(newToken, 'Token refreshed');
   }
 }

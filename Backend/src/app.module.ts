@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { UtilitiesModule } from './utilities/utilities.module';
 import { FollowModule } from './follow/follow.module';
 import { ConfigModule } from '@nestjs/config';
+import { TokenModule } from './token/token.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule,
     UtilitiesModule,
     FollowModule,
+    TokenModule,
   ],
   controllers: [AppController],
   providers: [AppService],
