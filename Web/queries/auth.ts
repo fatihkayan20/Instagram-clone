@@ -1,19 +1,18 @@
 import { QueryKeys } from "types/QueryKeys";
-import { useQuery } from "react-query";
-import axios from "axios";
-import { IQueryProps } from "types/IQueryProps";
+import { useQuery, UseQueryOptions } from "react-query";
+import axios, { AxiosError } from "axios";
+import { IRefreshTokenReturn } from "types/QueryReturnTypes";
 
-export const useRefreshTokenQuery = ({ onSuccess, onError }: IQueryProps) => {
+export const useRefreshTokenQuery = (
+  options?: Omit<
+    UseQueryOptions<undefined, AxiosError, IRefreshTokenReturn>,
+    "queryKey"
+  >
+) => {
   return useQuery(
     QueryKeys.RefreshToken,
     async () =>
       await axios.get(`/auth/token`).then((result) => result.data.data),
-    {
-      enabled: false,
-      refetchOnWindowFocus: false,
-      onSuccess,
-      onError,
-    }
+    options
   );
 };
-

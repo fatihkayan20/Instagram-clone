@@ -1,31 +1,47 @@
 import axios from "axios";
-import * as React from 'react'
+import { useRefreshTokenQuery } from "queries/auth";
+import * as React from "react";
+import { IRefreshTokenReturn } from "types/QueryReturnTypes";
 export const useAxios = () => {
-  const setBaseUrl = React.useCallback(async (url = "https://instagram-backend.vercel.app/") => {
-    axios.defaults.baseURL = url;
-  },[]);
+  const onSuccessRefreshToken = (data: IRefreshTokenReturn) => {
+    setToken(data.token);
+  };
+  const { refetch } = useRefreshTokenQuery({
+    onSuccess: onSuccessRefreshToken,
+
+    enabled: false,
+    refetchOnWindowFocus: false,
+  });
+
+  const setBaseUrl = React.useCallback(
+    async (url = "https://instagram-backend.vercel.app/") => {
+      axios.defaults.baseURL = url;
+    },
+    []
+  );
 
   const setToken = React.useCallback(async (token: string) => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  },[]);
+    localStorage.setItem("token", token);
+  }, []);
 
-  axios.interceptors.request.use(
-    (config) => {
-      return config;
+  axios.interceptors.response.use(
+    (res) => {
+      return res;
     },
     (error) => {
       if (error.response.status === 401) {
+        refetch();
       }
       return Promise.reject(error);
     }
   );
 
   const setup = React.useCallback(async () => {
+    const token = localStorage.getItem("token");
     await setBaseUrl();
-    await setToken(
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZhdGkiLCJlbWFpbCI6ImZhdGlAZ21haWwuY29tIiwiaWQiOiI2MjUyY2JhOGM1OTM1MjgxNmEzMTEyNWMiLCJpYXQiOjE2NTAxMzEwMjMsImV4cCI6MTY1MDEzNDYyM30.CovLIInbjzHARXaaCxdgAnZQMD78JG5kOA2nIiAwGBI"
-    );
-  },[setBaseUrl, setToken]);
+    await setToken(token || "");
+  }, [setBaseUrl, setToken]);
 
   return {
     setup,
