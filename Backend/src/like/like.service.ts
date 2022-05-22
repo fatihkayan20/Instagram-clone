@@ -71,4 +71,25 @@ export class LikeService {
   remove(id: number) {
     return `This action removes a #${id} like`;
   }
+
+  async isLikedPost({ userId, postId }) {
+    const isLiked = await this.prisma.like.findMany({
+      where: {
+        userId,
+        postId,
+      },
+    });
+
+    return isLiked.length > 0;
+  }
+
+  async getLikeCount(postId: string) {
+    const likeCount = await this.prisma.like.count({
+      where: {
+        postId,
+      },
+    });
+
+    return likeCount;
+  }
 }

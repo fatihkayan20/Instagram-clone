@@ -53,4 +53,13 @@ export class CommentService {
   remove(id: number) {
     return `This action removes a #${id} comment`;
   }
+
+  async getCommentCount(postId: string) {
+    const commentCount = await this.prisma.comment.count({
+      where: {
+        postId,
+      },
+    });
+    return commentCount;
+  }
 }

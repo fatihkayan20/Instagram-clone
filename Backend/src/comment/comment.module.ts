@@ -15,5 +15,6 @@ import { jwtConstants } from 'src/auth/constants';
   ],
   controllers: [CommentController],
   providers: [CommentService],
+  exports: [CommentService],
 })
 export class CommentModule {}
