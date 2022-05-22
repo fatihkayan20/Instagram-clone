@@ -9,6 +9,7 @@ import { ITokenData } from 'src/auth/entities/token-data.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { LikeService } from 'src/like/like.service';
 import { FollowService } from 'src/follow/follow.service';
+import { CommentService } from 'src/comment/comment.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export class PostService {
@@ -18,6 +19,7 @@ export class PostService {
     private prisma: PrismaService,
     private likeService: LikeService,
     private followService: FollowService,
+    private commentService: CommentService,
   ) {}
 
   async create(
@@ -68,17 +70,43 @@ export class PostService {
         },
       },
       include: {
-        user: true,
+        user: {
+          include: {
+            profileUrl: {
+              select: {
+                url: true,
+              },
+            },
+          },
+        },
         images: true,
-        likes: true,
-        comments: true,
       },
       orderBy: {
         createdAt: 'desc',
       },
     });
 
-    return new SuccessDataResult(posts, 'Posts fetched successfully');
+    const customPosts = await Promise.all(
+      posts.map(async (post) => {
+        const isLiked = await this.likeService.isLikedPost({
+          userId: tokenData.id,
+          postId: post.id,
+        });
+
+        const likeCount = await this.likeService.getLikeCount(post.id);
+
+        const commentCount = await this.commentService.getCommentCount(post.id);
+
+        return {
+          ...post,
+          isLiked,
+          likeCount,
+          commentCount,
+        };
+      }),
+    );
+
+    return new SuccessDataResult(customPosts, 'Posts fetched successfully');
   }
   async findOne(id: string) {
     const post = await this.prisma.post.findUnique({ where: { id } });
