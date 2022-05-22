@@ -2,4 +2,6 @@
 
 .container {
     margin-top: $navbar-height;
+    min-height: calc(100vh - $navbar-height);
+    background-color: #fafafa;
 }

@@ -15,4 +15,10 @@ a {
   box-sizing: border-box;
 }
 
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
 @import "./variables.scss"
