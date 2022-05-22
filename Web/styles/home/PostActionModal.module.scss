@@ -1,0 +1,22 @@
+.actions {
+
+    .open__button{
+        background: transparent;
+        font-size: 1.3rem;
+        transform: translateY(-5px);
+    }
+
+
+    .modal__option{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 1rem;
+        font-weight: bold;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2) ;
+        cursor: pointer;
+        user-select: none;
+    }
+        
+}

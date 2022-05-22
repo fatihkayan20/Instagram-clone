@@ -1,0 +1,61 @@
+$icon-size: 24px;
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1rem;
+    background-color: #fff;
+
+    div {
+        display: flex;
+        align-items: center;
+        width: calc(3 * ($icon-size + 1rem));
+        height: 1rem;
+    }
+    
+    .left {
+        justify-content: flex-start;
+        cursor: pointer;
+    }
+    
+    .dots{
+        width: 100%;
+        align-items: flex-start;
+        justify-content: center;
+
+        div {
+            width: .4rem;
+            height: .4rem;
+            border-radius: 50%;
+            background: #a8a8a8;
+            margin: 0 .1rem;
+            transition: all .3s ease-in-out;
+        }
+
+        .active{
+            background: rgb(85, 102, 230);
+        }
+    }
+
+    .right{
+        justify-content: flex-end;
+    }
+
+    .icon {
+        position: relative;
+        overflow: hidden;
+        height: $icon-size;
+        width: $icon-size;
+        min-width: $icon-size;
+        margin-right: .5rem;
+        background: transparent;
+
+        &.last__child {
+            margin-right: 0;
+        }
+    }
+
+    
+}

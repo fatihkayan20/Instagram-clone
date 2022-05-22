@@ -30,7 +30,7 @@ export const Avatar: React.FC<AvatarProps> = ({
   return (
     <div className={styles.container}>
       <Image
-        src="https://scontent.cdninstagram.com/v/t51.2885-19/272699709_308566414553530_8534910364705861314_n.jpg?stp=dst-jpg_s150x150&_nc_ht=scontent.cdninstagram.com&_nc_cat=110&_nc_ohc=VUPnNUs4xcUAX8Pb9TD&edm=APs17CUBAAAA&ccb=7-4&oh=00_AT8jyFZTrHkfwccRuBCPLvcTwP66ZThB4_BG98i5U1bXwA&oe=62619A34&_nc_sid=978cb9"
+        src="	https://instagram.fadb2-2.fna.fbcdn.net/v/t51.2885-19/272699709_308566414553530_8534910364705861314_n.jpg?stp=dst-jpg_s150x150&_nc_ht=instagram.fadb2-2.fna.fbcdn.net&_nc_cat=110&_nc_ohc=v1Z1aNxZKYQAX-Jwusb&edm=AIQHJ4wBAAAA&ccb=7-5&oh=00_AT-TxeSz5UUKzAGNcBc6siUMLjDoV9DLaOU484YrwNXn0Q&oe=62911034&_nc_sid=7b02f1"
         width={24}
         height={24}
         alt="avatar"

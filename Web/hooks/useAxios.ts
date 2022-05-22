@@ -14,7 +14,7 @@ export const useAxios = () => {
   });
 
   const setBaseUrl = React.useCallback(
-    async (url = "https://instagram-backend.vercel.app/") => {
+    async (url = "http://localhost:3001/") => {
       axios.defaults.baseURL = url;
     },
     []
