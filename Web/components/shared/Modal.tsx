@@ -14,11 +14,14 @@ export const Modal: React.FC<ModalProps> = ({
   isOpen,
   animation,
 }) => {
+  React.useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "auto";
+  }, [isOpen]);
+
   return (
     <>
       {isOpen && (
-        <div>
-          <div className={styles.modal__backdrop} onClick={onClose} />
+        <div className={styles.modal__backdrop} onClick={onClose}>
           <div
             className={[
               styles.modal__content,
