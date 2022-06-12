@@ -1,7 +1,7 @@
-import axios from "axios";
-import { QueryClient, useQuery } from "react-query";
+import axios, { AxiosError } from "axios";
+import { QueryClient, useQuery, UseQueryOptions } from "react-query";
+import { ILikeResponse } from "types/ILikeResponse";
 import { IPost } from "types/IPost";
-import { IResponse } from "types/IResponse";
 import { QueryKeys } from "types/QueryKeys";
 
 export const useGetPostQuery = () => {
@@ -24,4 +24,25 @@ export const getPrefetchPostsQuery = async () => {
   );
 
   return queryClient;
+};
+
+export const useGetPostLikesQuery = (
+  postId: string,
+  page: number = 1,
+  options?: Omit<
+    UseQueryOptions<ILikeResponse, AxiosError>,
+    "queryKey" | "queryFn"
+  >
+) => {
+  return useQuery<ILikeResponse, AxiosError>(
+    [QueryKeys.GetPostLikes, postId, page],
+    async () =>
+      await axios
+        .get(`likes/${postId}/${page}`)
+        .then((result) => result.data.data),
+    {
+      keepPreviousData: true,
+      ...options,
+    }
+  );
 };

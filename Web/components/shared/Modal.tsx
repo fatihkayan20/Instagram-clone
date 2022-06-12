@@ -6,24 +6,34 @@ interface ModalProps {
   readonly onClose: () => void;
   readonly animation?: "slide" | "fade" | "zoomOut" | "zoomIn";
   readonly children: React.ReactNode;
+  readonly className?: string;
+  readonly style?: React.CSSProperties;
 }
 
 export const Modal: React.FC<ModalProps> = ({
   children,
   onClose,
   isOpen,
-  animation,
+  animation = "zoomOut",
+  className,
+  style,
 }) => {
+  React.useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "auto";
+  }, [isOpen]);
+
   return (
     <>
       {isOpen && (
-        <div>
-          <div className={styles.modal__backdrop} onClick={onClose} />
+        <div className={styles.modal__backdrop} onClick={onClose}>
           <div
             className={[
               styles.modal__content,
-              animation ? styles[animation] : styles.zoomOut,
+              styles[animation],
+              className,
             ].join(" ")}
+            style={style}
+            onClick={(e) => e.stopPropagation()}
           >
             {children}
           </div>

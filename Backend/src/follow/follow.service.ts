@@ -63,4 +63,16 @@ export class FollowService {
 
     return followings;
   }
+
+  async isFollowing(follower, following) {
+    const follow = await this.prisma.follow.findFirst({
+      where: {
+        followerId: follower,
+        followingId: following,
+      },
+    });
+    console.log({ follow, follower, following });
+
+    return follow != null;
+  }
 }

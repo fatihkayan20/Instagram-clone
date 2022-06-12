@@ -5,4 +5,6 @@ export interface IUser {
   readonly profileUrl: {
     readonly url: string;
   };
+  readonly isFollowing?: boolean;
+  readonly isOwnUser?: boolean;
 }

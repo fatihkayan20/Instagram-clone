@@ -42,7 +42,7 @@ export const PostImageCarousel: React.FC<PostImageCarouselProps> = ({
           className={styles.image}
           style={{
             aspectRatio,
-            transform: `translateX(calc(100vw * ${-currentImage}))`,
+            transform: `translateX(calc(100% * ${-currentImage}))`,
           }}
         >
           <Image
