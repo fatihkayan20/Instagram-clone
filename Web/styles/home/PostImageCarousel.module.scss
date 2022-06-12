@@ -1,12 +1,12 @@
 .container{
     position: relative;
     display: flex;
-    width: calc(100vw - 1rem);
+    width: 100%;
     overflow: hidden;
     
     .image{
         position: relative;
-        min-width: 100vw;
+        min-width: 100%;
         height: auto;
         overflow: hidden;
         user-select: none;
