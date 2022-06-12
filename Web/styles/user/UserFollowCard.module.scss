@@ -1,0 +1,41 @@
+.card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: .5rem;
+    cursor: pointer;
+    &:nth-child(1){
+        margin-top: 1rem;
+    }
+    
+    &__avatar{
+        position: relative;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-right: .5rem;
+        border: 1px solid #e6e6e6;
+    }
+
+    &__user {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex:1;
+
+        &__name {
+            font-weight: 500;
+            color: #000;
+        }
+    }
+
+    &__button{
+        border-radius: .2rem;
+        border: transparent;
+        padding: .4rem .8rem;
+        background-color: rgb(0,149,246);
+        color: #fff;
+    }
+}

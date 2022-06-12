@@ -74,6 +74,15 @@ export class UserService {
     return null;
   }
 
+  async isOwnUser(id: string) {
+    const tokenData: ITokenData = this.request.user as ITokenData;
+
+    if (tokenData?.id === id) {
+      return true;
+    }
+    return false;
+  }
+
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }

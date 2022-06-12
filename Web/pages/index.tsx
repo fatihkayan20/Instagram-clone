@@ -9,7 +9,7 @@ const HomePage = () => {
   const { data: posts } = useGetPostQuery();
 
   return (
-    <div>
+    <div className={styles.container}>
       {posts?.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}
